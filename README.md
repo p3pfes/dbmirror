@@ -14,5 +14,6 @@ db!post <channel> <tag of your choice>
 There can only be 1 tag per channel.
 
 To change the tag for a specified channel, you do the same command, for the same channel, but the tag that will replace the original tag will be in the <tag of your choice> position. 
+Also, make sure the tag you add has posts and also has no mistakes regarding syntax.
 
 Bug reporting: @komeijisatofan on Twitter/X, @the7thone on discord.
