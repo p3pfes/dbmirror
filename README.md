@@ -17,3 +17,4 @@ To change the tag for a specified channel, you do the same command, for the same
 Also, make sure the tag you add has posts and also has no mistakes regarding syntax.
 
 Bug reporting: @komeijisatofan on Twitter/X, @the7thone on discord.
+I am not liable for any misuse of the bot by its users.
