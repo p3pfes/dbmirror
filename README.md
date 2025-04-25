@@ -9,7 +9,7 @@ https://discord.com/oauth2/authorize?client_id=1361779903019749576&permissions=5
 
 -- TUTORIAL --
 To use the bot, you need to have ManageChannels permission. 
-To start, do 
+To start, do :
 
 db!post <channel> <tag of your choice>
 
