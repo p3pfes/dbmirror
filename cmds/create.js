@@ -1,16 +1,22 @@
 const fs = require('fs')
 module.exports = {
-    name:["post"],
+    name:["post", 'repost', 'start',"initialise"],
     description:"Hi lol",
     execute(message,args,client) {
-        let dat = require('../funcs/dat.js').util().grabdata(message)
-        if (args[0])
         if(message.channel.permissionsFor(message.member).has('ManageChannels')) {
             ochannel = message.mentions.channels.first() 
+            if(!ochannel) {
+                message.channel.send("Channel does not exist")
+                return
+            }
             if(ochannel || `<#${ochannel.id}>` == args[0]) {
                 let tag = args[1]
                 if(!tag) {
                     message.channel.send("Please specify a tag.")
+                    return
+                }
+                if (tag.length >= 100) {
+                    message.channel.send("Tag is too long.")
                     return
                 }
                 if (!args[0]) {
@@ -18,7 +24,7 @@ module.exports = {
                     return
                 }
                 let diddyAhhBluds = ["loli", "lolicon", "shota", "shotacon"]
-                if (tag && diddyAhhBluds.includes(tag.toLowerCase)) {
+                if (tag && diddyAhhBluds.some(diddyMoment => tag.toLowerCase().includes(diddyMoment))) {
                     message.channel.send("This tag has been blacklisted.")
                     return
                 }
@@ -35,7 +41,7 @@ module.exports = {
                 if (!fs.existsSync(area)) {
                     fs.mkdirSync(area)
                 }
-                
+                let dat = require('../funcs/dat.js').util().grabdata(message)
                 if(fs.existsSync(area+`/${ochannel.id}.json`)) {
                     message.channel.send(`Replaced tag ${dat.tag} with ${tag}.`)
                     dat.tag = tag 
