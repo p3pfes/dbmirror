@@ -20,7 +20,16 @@ db!post #channel komeiji_satori
 There can only be 1 tag per channel.
 
 To change the tag for a specified channel, you do the same command, for the same channel, but the tag that will replace the original tag will be in the <tag of your choice> position. 
+e.g 
+you send: db!post #channel komeiji_koishi 
+bot replies: Replaced tag (original tag would be here) with komeiji_koishi.
+
+
 Also, make sure the tag you add has posts and also has no mistakes regarding syntax.
+
+To stop dbmirror from posting in a channel, use db!stop.
+e.g 
+db!stop #channel
 
 -- TUTORIAL --
 
