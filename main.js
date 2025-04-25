@@ -1,5 +1,3 @@
-
-
 const https = require('https')
 const savesDir = './saves'
 const { Client, GatewayIntentBits } = require('discord.js')
@@ -13,7 +11,6 @@ const client = new Client({
     GatewayIntentBits.MessageContent
   ]
 })
-console.log(client.guilds.cache.size, 'servers')
 const prefix = "db!"
 function serverTags() {
   const watchers = [];
@@ -24,10 +21,17 @@ function serverTags() {
 
   serverFolders.forEach(serverId => {
     const serverPath = `${savesDir}/${serverId}`;
-    const files = fs.readdirSync(serverPath).filter(file => file.endsWith('.json'));
-
+    const files = fs.readdirSync(serverPath).filter(file => file.endsWith('.json'));    
+    if(fs.readdirSync(serverPath).length <= 0 || !client.guilds.cache.get(serverId)) {
+      fs.rmSync(serverPath, { recursive: true, force: true})
+      console.log("deleted directory")
+    }
     files.forEach(file => {
       const filePath = `${serverPath}/${file}`;
+      if(!client.channels.cache.get(file.replace('.json', ''))) {
+        fs.rmSync(`${serverPath}/${file}`, {recursive: true, force: true})
+        console.log("deleted json")
+      } 
       try {
         const raw = fs.readFileSync(filePath, 'utf8');
         const json = JSON.parse(raw);
@@ -43,13 +47,12 @@ function serverTags() {
       }
     });
   });
-  console.log(watchers)
   return watchers;
 }
 function fetchLatestPosts(callback) {
   const options = {
     hostname: 'danbooru.donmai.us',
-    path: '/posts.json?limit=10&only=id,tag_string,file_url',
+    path: '/posts.json?limit=10&only=id,tag_string,file_url,rating',
     method: 'GET',
     headers: {
       'User-Agent': 'DanbooruDiscordBot/1.0'
@@ -84,11 +87,16 @@ function danbooruListener() {
     }
 
     posts.forEach(post => {
+      console.log(post)
       if (seenPostIds.has(post.id)) return;
 
       const postTags = post.tag_string.toLowerCase().split(' ');
       if (diddyAhhTags.some(diddyMoment => postTags.includes(diddyMoment))) {
-        console.log(`${postTags} has been blocked`)
+        console.log(`${postTags.id} has been blocked`)
+        return
+      }
+      if (post.rating === "q" || post.rating === "e" || post.rating === "s") {
+        console.log("Blocked NSFW post.")
         return
       }
       watchers.forEach(({ channelId, tag }) => {
@@ -98,7 +106,7 @@ function danbooruListener() {
             const postUrl = `https://danbooru.donmai.us/posts/${post.id}`;
             const imageUrl = post.file_url || postUrl;
 
-            channel.send(`**Tag:** \`${tag}\`\n ${postUrl}\n ${imageUrl}`)
+            channel.send(`**Tag:** \`${tag}\`\n ${postUrl}\n`)
             .catch(err => console.error(`couldn't send to channel ${channelId}:`, err.message));
           }
         }
@@ -135,5 +143,4 @@ client.on('messageCreate', message => {
   } 
   return
 })
-client.login('')
-//setup an nsfw toggle using nsfw.js file
+client.login('') // if your forking this bot, put token here
