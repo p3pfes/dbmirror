@@ -9,8 +9,14 @@ https://discord.com/oauth2/authorize?client_id=1361779903019749576&permissions=5
 
 -- TUTORIAL --
 To use the bot, you need to have ManageChannels permission. 
-To start, do: 
+To start, do 
+
 db!post <channel> <tag of your choice>
+
+for example, 
+
+db!post #channel komeiji_satori
+
 There can only be 1 tag per channel.
 
 To change the tag for a specified channel, you do the same command, for the same channel, but the tag that will replace the original tag will be in the <tag of your choice> position. 
