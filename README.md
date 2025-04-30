@@ -31,6 +31,16 @@ To stop dbmirror from posting in a channel, use db!stop.
 e.g 
 db!stop #channel
 
+This bot will automatically block nsfw posts too.
+To let the bot post nsfw content,
+
+db!nsfw #channel-where-nsfw-content-tag-is
+e.g
+db!nsfw #channel
+bot replies: "NSFW posts are unfiltered". 
+
+to toggle it back on, repeat the command. 
+
 -- TUTORIAL --
 
 Bug reporting: @komeijisatofan on Twitter/X, @the7thone on discord.
