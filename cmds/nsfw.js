@@ -1,5 +1,4 @@
 const fs = require('fs')
-const { name } = require('../../block')
 const dat = require('../../funcs/dat').util()
 
 module.exports = {
