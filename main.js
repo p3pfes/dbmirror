@@ -109,8 +109,11 @@ function danbooruListener() {
           if (channel) {
             const postUrl = `https://danbooru.donmai.us/posts/${post.id}`;
             const imageUrl = post.file_url || postUrl;
-            if (glup && data.nsfw == "false") {
-              return
+            if (post.rating == "s" || post.rating == "q" || post.rating == "e") {
+              if (data.nsfw) {
+                glup = false // idk if u can get rid of glup. i didnt test it. im too scared to test it too lol
+                return
+                }
             }
             channel.send(`**Tag:** \`${tag}\`\n ${postUrl}\n`)
             
