@@ -1,9 +1,12 @@
 const https = require('https')
+
 const savesDir = './saves'
 const { Client, GatewayIntentBits } = require('discord.js')
 const fs = require("fs")
 const diddyAhhTags = ["loli",'shota', 'lolicon', 'shotacon']
 let seenPostIds = new Set()
+const util = require('./funcs/dat').util()
+let glup = false
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -56,7 +59,7 @@ function fetchLatestPosts(callback) {
     method: 'GET',
     headers: {
       'User-Agent': 'DanbooruDiscordBot/1.0'
-    }
+    },
   };
 
   https.get(options, res => {
@@ -87,7 +90,6 @@ function danbooruListener() {
     }
 
     posts.forEach(post => {
-      console.log(post)
       if (seenPostIds.has(post.id)) return;
 
       const postTags = post.tag_string.toLowerCase().split(' ');
@@ -96,17 +98,22 @@ function danbooruListener() {
         return
       }
       if (post.rating === "q" || post.rating === "e" || post.rating === "s") {
-        console.log("Blocked NSFW post.")
-        return
+        glup = true
       }
-      watchers.forEach(({ channelId, tag }) => {
+      console.log(glup, post.rating)
+      watchers.forEach(({ channelId, tag, serverId }) => {
         if (postTags.includes(tag)) {
           const channel = client.channels.cache.get(channelId);
+          const server = client.guilds.cache.get(serverId)
+          let data = util.grabdata(channel)
           if (channel) {
             const postUrl = `https://danbooru.donmai.us/posts/${post.id}`;
             const imageUrl = post.file_url || postUrl;
-
+            if (glup && data.nsfw == "false") {
+              return
+            }
             channel.send(`**Tag:** \`${tag}\`\n ${postUrl}\n`)
+            
             .catch(err => console.error(`couldn't send to channel ${channelId}:`, err.message));
           }
         }
@@ -143,4 +150,4 @@ client.on('messageCreate', message => {
   } 
   return
 })
-client.login('') // if your forking this bot, put token here
+client.login('') 
