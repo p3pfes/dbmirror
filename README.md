@@ -59,7 +59,7 @@ These terms may be changed at any time. Continued use of dbmirror after changes 
 The data stored by dbmirror is as goes:
 - Server IDs and Channel IDs where the bot is active
 - Tags or settings saved per server/channel
-- Post IDs from Danbooru to avoid duplicates
+- Post IDs from Danbooru to avoid duplicates.
 
 dbmirror will not collect or store any personal user data, e.g usernames, messages
 Stored data is used to match image tags with danbooru posts, send content to appropriate channels and prevent reposts.
